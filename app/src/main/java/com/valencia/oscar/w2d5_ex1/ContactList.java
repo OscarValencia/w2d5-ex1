@@ -1,68 +1,72 @@
 package com.valencia.oscar.w2d5_ex1;
 
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 public class ContactList extends AppCompatActivity {
+    private static final String TAG = ContactList.class.getSimpleName()+"_TAG";
+    private ContactDB MyContacts;
 
-    EditText nameET,emailET,ageET,lastNameET;
-    Button photoBtn, saveBtn, listBtn;
-    TextView alertsTV;
-    ContactDB MyContacts;
-
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_list);
 
-        nameET = findViewById(R.id.nameET);
-        lastNameET = findViewById(R.id.lastNameET);
-        emailET = findViewById(R.id.emailET);
-        ageET = findViewById(R.id.ageET);
-        photoBtn = findViewById(R.id.photoBtn);
-        saveBtn = findViewById(R.id.saveBtn);
-        listBtn = findViewById(R.id.listBtn);
-        alertsTV = findViewById(R.id.alertsTV);
+        recyclerView = findViewById(R.id.recyclerView);
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        adapter = new ContactAdapter(generateList());
+        recyclerView.setAdapter(adapter);
+
     }
 
-    public void saveRecord(){
-        MyContacts = new ContactDB(this, "MyContacts", null, 1);
+    private ArrayList<ContactItem> generateList(){
+        ArrayList<ContactItem> list = new ArrayList<>();
+        Cursor cursor = null;
+        MyContacts = new ContactDB(this, "contacts", null, 1);
         SQLiteDatabase db = MyContacts.getWritableDatabase();
-        String tmpPicturePath ="";
-
-        if(nameET.getText().toString().length()>0 &&
-                emailET.getText().toString().length()>0 &&
-                ageET.getText().toString().length()>0){
-            if(db!=null){
-                String sqlInsert = "INSERT INTO "+MyContacts.getTABLE_NAME()+
-                        "("+MyContacts.MyContacts()+","+MyContacts.MyContacts()+","+MyContacts.getCOLUMN_4()+","+MyContacts.getCOLUMN_5()+") " +
-                        "VALUES('"+nameET.getText().toString()+
-                        "','"+emailET.getText().toString()+
-                        "',"+Integer.parseInt(ageET.getText().toString())+
-                        ",'"+tmpPicturePath+"')";
-                Log.d(TAG,sqlInsert);
-                try{
-                    db.execSQL(sqlInsert);
-                    db.close();
-                    nameET.setText("");
-                    emailET.setText("");
-                    ageET.setText("");
-
-                }catch(Exception e){
-                    Log.d(TAG,e.toString());
+        if(db!=null){
+            String sqlSelect = "SELECT * FROM "+MyContacts.getTABLE_NAME();
+            Log.d(TAG,sqlSelect);
+            try {
+                cursor = db.rawQuery(sqlSelect, null);
+                cursor.moveToFirst();
+                while(!cursor.isAfterLast()){
+                    ContactItem item = new ContactItem(
+                            cursor.getString(cursor.getColumnIndex((MyContacts.getCOLUMN_2()))),
+                            cursor.getString(cursor.getColumnIndex((MyContacts.getCOLUMN_3()))),
+                            Integer.parseInt(cursor.getString(cursor.getColumnIndex((MyContacts.getCOLUMN_4())))),
+                            cursor.getString(cursor.getColumnIndex((MyContacts.getCOLUMN_5()))),
+                            cursor.getString(cursor.getColumnIndex((MyContacts.getCOLUMN_6()))),
+                            cursor.getString(cursor.getColumnIndex((MyContacts.getCOLUMN_7())))
+                    );
+                    list.add(item);
+                    cursor.moveToNext();
                 }
-                Log.d(TAG,"Record stored!");
-                alertsTV.setText("Record stored!");
-            }else{
-                Log.d(TAG,"DB has not been opened");
+                cursor.close();
+                db.close();
+            }catch(Exception e){
+                Log.d(TAG, e.toString());
             }
         }else{
-            alertsTV.setText("Fill out all the fields.");
+            Log.d(TAG,"Unable to open DB");
         }
+        return list;
     }
+
+
 }

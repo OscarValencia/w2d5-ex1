@@ -22,19 +22,26 @@
         android:inputType="textPersonName" />
 
     <EditText
-        android:id="@+id/emailET"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:hint="Email" />
-
-    <EditText
         android:id="@+id/ageET"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="number"
         android:numeric="integer"
         android:hint="Age" />
+
+    <EditText
+        android:id="@+id/emailET"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:hint="Email" />
+
+    <EditText
+        android:id="@+id/phoneET"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="phone"
+        android:hint="Phone" />
 
     <Button
         android:id="@+id/photoBtn"
@@ -43,17 +50,17 @@
         android:text="Photo"
         android:onClick="launchCamera"/>
 
+    <TextView
+        android:id="@+id/photoTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <Button
         android:id="@+id/saveBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="saveContact"
         android:text="Save" />
-
-    <Button
-        android:id="@+id/listBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="List" />
 
     <TextView
         android:id="@+id/alertsTV"

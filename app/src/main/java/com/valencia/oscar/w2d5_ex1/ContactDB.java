@@ -10,17 +10,19 @@ public class ContactDB extends SQLiteOpenHelper {
     private final String COLUMN_1 = "id";
     private final String COLUMN_2 = "name";
     private final String COLUMN_3 = "lastname";
-    private final String COLUMN_4 = "email";
-    private final String COLUMN_5 = "age";
-    private final String COLUMN_6 = "imagepath";
+    private final String COLUMN_4 = "age";
+    private final String COLUMN_5 = "email";
+    private final String COLUMN_6 = "phone";
+    private final String COLUMN_7 = "imagepath";
     private String sqlCreate =
-            "CREATE TABLE IF NOT EXISTS "+TABLE_NAME+" ("+COLUMN_1+
-                    " INTEGER PRIMARY KEY AUTOINCREMENT, "+COLUMN_2+
-                    " VARCHAR NOT NULL, "+COLUMN_3+
-                    " VARCHAR NOT NULL, "+COLUMN_4+
-                    " VARCHAR NOT NULL, "+COLUMN_5+
-                    " INTEGER NOT NULL, "+COLUMN_6+
-                    " VARCHAR)";
+            "CREATE TABLE IF NOT EXISTS "+TABLE_NAME+" ("+
+                    COLUMN_1+" INTEGER PRIMARY KEY AUTOINCREMENT, "+
+                    COLUMN_2+" VARCHAR NOT NULL, "+
+                    COLUMN_3+" VARCHAR NOT NULL, "+
+                    COLUMN_4+" INTEGER NOT NULL, "+
+                    COLUMN_5+" VARCHAR NOT NULL, "+
+                    COLUMN_6+" VARCHAR NOT NULL, "+
+                    COLUMN_7+" VARCHAR)";
     private String sqlDrop = "DROP TABLE IF EXISTS "+TABLE_NAME;
 
     public ContactDB(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -55,9 +57,13 @@ public class ContactDB extends SQLiteOpenHelper {
         return COLUMN_6;
     }
 
+    public String getCOLUMN_7() {
+        return COLUMN_7;
+    }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
-
+        db.execSQL(sqlCreate);
     }
 
     @Override

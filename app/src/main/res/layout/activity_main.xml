@@ -4,22 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="128dp"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
 
     <Button
         android:id="@+id/contactBtn"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Contact"
-        android:onClick="lauchToContacts"/>
+        android:onClick="lauchToContacts"
+        android:text="Create Contact" />
 
     <Button
         android:id="@+id/contactListBtn"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Contact List"
-        android:onClick="lauchToContactList"/>
+        android:onClick="lauchToContactList"
+        android:text="Contact List" />
 </LinearLayout>
